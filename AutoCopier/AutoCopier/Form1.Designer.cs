@@ -1,4 +1,7 @@
-﻿namespace AutoCopier
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace AutoCopier
 {
     partial class copierForm
     {
@@ -31,18 +34,27 @@
         private void InitializeComponent()
         {
             this.startMonBtn = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            statusPgBar = new System.Windows.Forms.ProgressBar();
             this.srcLb = new System.Windows.Forms.Label();
             this.tgtLb = new System.Windows.Forms.Label();
             this.srcText = new System.Windows.Forms.TextBox();
             this.tgtText = new System.Windows.Forms.TextBox();
             this.srcBtn = new System.Windows.Forms.Button();
             this.tgtBtn = new System.Windows.Forms.Button();
+            this.copyRdBtn = new System.Windows.Forms.RadioButton();
+            this.cutRdBtn = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
+
+            //ctrlList.Add(startMonBtn);
+            //ctrlList.Add(statusPgBar);
+            ctrlList.Add(srcBtn);
+            ctrlList.Add(tgtBtn);
+            ctrlList.Add(copyRdBtn);
+            ctrlList.Add(cutRdBtn);
             // 
             // startMonBtn
             // 
-            this.startMonBtn.Location = new System.Drawing.Point(139, 208);
+            this.startMonBtn.Location = new System.Drawing.Point(134, 220);
             this.startMonBtn.Name = "startMonBtn";
             this.startMonBtn.Size = new System.Drawing.Size(159, 36);
             this.startMonBtn.TabIndex = 0;
@@ -50,12 +62,12 @@
             this.startMonBtn.UseVisualStyleBackColor = true;
             this.startMonBtn.Click += new System.EventHandler(this.startMonBtn_Click);
             // 
-            // progressBar1
+            // statusPgBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(24, 168);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(396, 23);
-            this.progressBar1.TabIndex = 1;
+            statusPgBar.Location = new System.Drawing.Point(24, 179);
+            statusPgBar.Name = "statusPgBar";
+            statusPgBar.Size = new System.Drawing.Size(396, 23);
+            statusPgBar.TabIndex = 1;
             // 
             // srcLb
             // 
@@ -113,18 +125,42 @@
             this.tgtBtn.UseVisualStyleBackColor = true;
             this.tgtBtn.Click += new System.EventHandler(this.tgtBtn_Click);
             // 
+            // copyRdBtn
+            // 
+            this.copyRdBtn.AutoSize = true;
+            this.copyRdBtn.Location = new System.Drawing.Point(40, 141);
+            this.copyRdBtn.Name = "copyRdBtn";
+            this.copyRdBtn.Size = new System.Drawing.Size(94, 21);
+            this.copyRdBtn.TabIndex = 8;
+            this.copyRdBtn.Text = "Copy Only";
+            this.copyRdBtn.UseVisualStyleBackColor = true;
+            // 
+            // cutRdBtn
+            // 
+            this.cutRdBtn.AutoSize = true;
+            this.cutRdBtn.Checked = true;
+            this.cutRdBtn.Location = new System.Drawing.Point(156, 141);
+            this.cutRdBtn.Name = "cutRdBtn";
+            this.cutRdBtn.Size = new System.Drawing.Size(50, 21);
+            this.cutRdBtn.TabIndex = 9;
+            this.cutRdBtn.TabStop = true;
+            this.cutRdBtn.Text = "Cut";
+            this.cutRdBtn.UseVisualStyleBackColor = true;
+            // 
             // copierForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(444, 281);
+            this.Controls.Add(this.cutRdBtn);
+            this.Controls.Add(this.copyRdBtn);
             this.Controls.Add(this.tgtBtn);
             this.Controls.Add(this.srcBtn);
             this.Controls.Add(this.tgtText);
             this.Controls.Add(this.srcText);
             this.Controls.Add(this.tgtLb);
             this.Controls.Add(this.srcLb);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(statusPgBar);
             this.Controls.Add(this.startMonBtn);
             this.Name = "copierForm";
             this.Text = "Copier";
@@ -136,14 +172,19 @@
 
         #endregion
 
+        private List<Control> ctrlList = new List<Control>();
+
         private System.Windows.Forms.Button startMonBtn;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private static System.Windows.Forms.ProgressBar statusPgBar;
         private System.Windows.Forms.Label srcLb;
         private System.Windows.Forms.Label tgtLb;
         private System.Windows.Forms.TextBox srcText;
         private System.Windows.Forms.TextBox tgtText;
         private System.Windows.Forms.Button srcBtn;
         private System.Windows.Forms.Button tgtBtn;
+        private System.Windows.Forms.RadioButton copyRdBtn;
+        private System.Windows.Forms.RadioButton cutRdBtn;
+
     }
 }
 

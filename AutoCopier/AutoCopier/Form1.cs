@@ -22,6 +22,9 @@ namespace AutoCopier
 
         private static bool runThread = true;
 
+        private bool ifDel = true;
+
+        private bool isMon = false;
         public copierForm()
         {
             InitializeComponent();
@@ -54,20 +57,55 @@ namespace AutoCopier
 
         private void startMonBtn_Click(object sender, EventArgs e)
         {
-            FileSystemWatcher watch = new FileSystemWatcher();
-            watch.Path = sourcePath;
+            if (!isMon)
+            {
+                if (copyRdBtn.Checked)
+                    ifDel = false;
+                if (cutRdBtn.Checked)
+                    ifDel = true;
+                FileSystemWatcher watch = new FileSystemWatcher();
+                watch.Path = sourcePath;
 
-            watch.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+                watch.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
 
-            watch.Filter = "*.rar";
+                watch.Filter = "*.rar";
 
-            watch.Changed += new FileSystemEventHandler(OnChanged);
-            watch.Created += new FileSystemEventHandler(OnChanged);
-            watch.Renamed += new RenamedEventHandler(OnChanged);
-            watch.EnableRaisingEvents = true;
-            this.thread = new Thread(new ThreadStart(copyFun));
-            this.thread.Start();
-            Console.WriteLine("Start Monitoring");
+                watch.Changed += new FileSystemEventHandler(OnChanged);
+                watch.Created += new FileSystemEventHandler(OnChanged);
+                watch.Renamed += new RenamedEventHandler(OnChanged);
+                watch.EnableRaisingEvents = true;
+                this.thread = new Thread(new ThreadStart(copyFun));
+                runThread = true;
+                this.thread.Start();
+                Console.WriteLine("Start Monitoring");
+                //change UI status to monitoring
+                statusPgBar.Style = ProgressBarStyle.Marquee;
+                statusPgBar.ForeColor = Color.Green;
+                foreach (Control ct in ctrlList)
+                {
+                    ct.Enabled = false;
+                }
+                isMon = true;
+            }
+            else
+            {
+                runThread = false;
+                lock (copierList)
+                {
+                    if (this.thread != null && this.thread.IsAlive)
+                    {
+                        Monitor.Pulse(copierList);
+                    }
+                }
+                this.thread.Join();
+                this.thread = null;
+                statusPgBar.Style = ProgressBarStyle.Continuous;
+                foreach (Control ct in ctrlList)
+                {
+                    ct.Enabled = true;
+                }
+                isMon = false;
+            }
         }
 
         private void OnChanged(object source, FileSystemEventArgs e)
@@ -75,13 +113,17 @@ namespace AutoCopier
             string fileName = e.Name;
             lock (copierList)
             {
-                copierList.Push(new Copier(e.FullPath, this.targetPath + @"\\" + fileName));
+                Copier copier = new Copier(e.FullPath, this.targetPath + @"\\" + fileName);
+                copier.IfDel = ifDel;
+                copierList.Push(copier);
+                copier = null;
                 Console.WriteLine("File: " + e.Name + " " + e.ChangeType);
                 Monitor.Pulse(copierList);
             }
         }
 
-        private static void copyFun(){
+        private static void copyFun()
+        {
             lock (copierList)
             {
                 while (runThread)
@@ -89,29 +131,39 @@ namespace AutoCopier
                     if (copierList.Count > 0)
                     {
                         Copier cop = copierList.Pop();
+                        //Invoke(new updatePgBarCallBack(updatePgBar), new object[] { true });
                         cop.startCopy();
-
                     }
                     else
                     {
                         Monitor.Wait(copierList);
                     }
+                    //this.Invoke(new updatePgBarCallBack(updatePgBar), new object[] { false });
                 }
             }
             Console.WriteLine("thread terminates");
+        }
+
+        private delegate void updatePgBarCallBack(bool isCopy);
+
+        private static void updatePgBar(bool isCopy)
+        {
+            if (isCopy)
+                statusPgBar.ForeColor = Color.Red;
+            else statusPgBar.ForeColor = Color.Green;
         }
 
         private void copierForm_FormClosed(object sender, FormClosedEventArgs e)
         {
 
             runThread = false;
-            lock (copierList)
+            if (this.thread != null && this.thread.IsAlive)
             {
-                if (this.thread != null && this.thread.IsAlive)
+                lock (copierList)
                 {
                     Monitor.Pulse(copierList);
-
                 }
+                this.thread.Join();
             }
         }
     }
