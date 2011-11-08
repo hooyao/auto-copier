@@ -34,7 +34,7 @@ namespace AutoCopier
         private void InitializeComponent()
         {
             this.startMonBtn = new System.Windows.Forms.Button();
-            statusPgBar = new System.Windows.Forms.ProgressBar();
+            this.statusPgBar = new System.Windows.Forms.ProgressBar();
             this.srcLb = new System.Windows.Forms.Label();
             this.tgtLb = new System.Windows.Forms.Label();
             this.srcText = new System.Windows.Forms.TextBox();
@@ -43,18 +43,13 @@ namespace AutoCopier
             this.tgtBtn = new System.Windows.Forms.Button();
             this.copyRdBtn = new System.Windows.Forms.RadioButton();
             this.cutRdBtn = new System.Windows.Forms.RadioButton();
+            this.lbExt = new System.Windows.Forms.Label();
+            this.txtExt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-
-            //ctrlList.Add(startMonBtn);
-            //ctrlList.Add(statusPgBar);
-            ctrlList.Add(srcBtn);
-            ctrlList.Add(tgtBtn);
-            ctrlList.Add(copyRdBtn);
-            ctrlList.Add(cutRdBtn);
             // 
             // startMonBtn
             // 
-            this.startMonBtn.Location = new System.Drawing.Point(134, 220);
+            this.startMonBtn.Location = new System.Drawing.Point(142, 264);
             this.startMonBtn.Name = "startMonBtn";
             this.startMonBtn.Size = new System.Drawing.Size(159, 36);
             this.startMonBtn.TabIndex = 0;
@@ -64,10 +59,10 @@ namespace AutoCopier
             // 
             // statusPgBar
             // 
-            statusPgBar.Location = new System.Drawing.Point(24, 179);
-            statusPgBar.Name = "statusPgBar";
-            statusPgBar.Size = new System.Drawing.Size(396, 23);
-            statusPgBar.TabIndex = 1;
+            this.statusPgBar.Location = new System.Drawing.Point(24, 221);
+            this.statusPgBar.Name = "statusPgBar";
+            this.statusPgBar.Size = new System.Drawing.Size(396, 23);
+            this.statusPgBar.TabIndex = 1;
             // 
             // srcLb
             // 
@@ -147,11 +142,30 @@ namespace AutoCopier
             this.cutRdBtn.Text = "Cut";
             this.cutRdBtn.UseVisualStyleBackColor = true;
             // 
+            // lbExt
+            // 
+            this.lbExt.AutoSize = true;
+            this.lbExt.Location = new System.Drawing.Point(21, 186);
+            this.lbExt.Name = "lbExt";
+            this.lbExt.Size = new System.Drawing.Size(76, 17);
+            this.lbExt.TabIndex = 10;
+            this.lbExt.Text = "Extensions";
+            // 
+            // txtExt
+            // 
+            this.txtExt.Location = new System.Drawing.Point(120, 183);
+            this.txtExt.Name = "txtExt";
+            this.txtExt.Size = new System.Drawing.Size(202, 22);
+            this.txtExt.TabIndex = 11;
+            this.txtExt.Text = "*rar,*zip";
+            // 
             // copierForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 281);
+            this.ClientSize = new System.Drawing.Size(444, 330);
+            this.Controls.Add(this.txtExt);
+            this.Controls.Add(this.lbExt);
             this.Controls.Add(this.cutRdBtn);
             this.Controls.Add(this.copyRdBtn);
             this.Controls.Add(this.tgtBtn);
@@ -160,7 +174,7 @@ namespace AutoCopier
             this.Controls.Add(this.srcText);
             this.Controls.Add(this.tgtLb);
             this.Controls.Add(this.srcLb);
-            this.Controls.Add(statusPgBar);
+            this.Controls.Add(this.statusPgBar);
             this.Controls.Add(this.startMonBtn);
             this.Name = "copierForm";
             this.Text = "Copier";
@@ -175,7 +189,6 @@ namespace AutoCopier
         private List<Control> ctrlList = new List<Control>();
 
         private System.Windows.Forms.Button startMonBtn;
-        private static System.Windows.Forms.ProgressBar statusPgBar;
         private System.Windows.Forms.Label srcLb;
         private System.Windows.Forms.Label tgtLb;
         private System.Windows.Forms.TextBox srcText;
@@ -184,6 +197,9 @@ namespace AutoCopier
         private System.Windows.Forms.Button tgtBtn;
         private System.Windows.Forms.RadioButton copyRdBtn;
         private System.Windows.Forms.RadioButton cutRdBtn;
+        private Label lbExt;
+        private TextBox txtExt;
+        private ProgressBar statusPgBar;
 
     }
 }
