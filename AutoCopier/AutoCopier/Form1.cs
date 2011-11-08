@@ -18,6 +18,8 @@ namespace AutoCopier
 
         private string targetPath = "F:\\";
 
+        private string intExt = "*.rar,*.zip";
+
         private Thread thread;
 
         private static bool runThread = true;
@@ -63,17 +65,24 @@ namespace AutoCopier
                     ifDel = false;
                 if (cutRdBtn.Checked)
                     ifDel = true;
-                FileSystemWatcher watch = new FileSystemWatcher();
-                watch.Path = sourcePath;
 
-                watch.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+                intExt = txtExt.Text;
+                string[] extFilter = intExt.Split(new char[] { ',' });
 
-                watch.Filter = "*.rar";
+                foreach (String ext in extFilter)
+                {
+                    FileSystemWatcher watch = new FileSystemWatcher();
+                    watch.Path = sourcePath;
 
-                watch.Changed += new FileSystemEventHandler(OnChanged);
-                watch.Created += new FileSystemEventHandler(OnChanged);
-                watch.Renamed += new RenamedEventHandler(OnChanged);
-                watch.EnableRaisingEvents = true;
+                    watch.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+
+                    watch.Filter = ext;
+
+                    watch.Changed += new FileSystemEventHandler(OnChanged);
+                    watch.Created += new FileSystemEventHandler(OnChanged);
+                    watch.Renamed += new RenamedEventHandler(OnChanged);
+                    watch.EnableRaisingEvents = true;
+                }
                 this.thread = new Thread(new ThreadStart(copyFun));
                 runThread = true;
                 this.thread.Start();
@@ -146,7 +155,7 @@ namespace AutoCopier
 
         private delegate void updatePgBarCallBack(bool isCopy);
 
-        private static void updatePgBar(bool isCopy)
+        private void updatePgBar(bool isCopy)
         {
             if (isCopy)
                 statusPgBar.ForeColor = Color.Red;
