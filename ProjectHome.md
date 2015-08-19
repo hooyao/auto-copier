@@ -1,0 +1,3 @@
+The reason I develop this application is I own a fileserver premium account, however its download software is bullshit,parallel downloading of more than 3 files at 3M/s is kill my hard drive.The entire system lags as a bitch.Fortunately, I have 2g memory as memdisk. I set ramdisk as temp download directory and that solves my harddrive problem. This application can automatically move finished file in my ramdisk to target directory. Of course, you may find out other interesting usage.
+
+Google project host download function is deprecated. You can find a download link resides to the left.
